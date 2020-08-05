@@ -9,4 +9,4 @@ if __name__ == "__main__":
         s = " (DONE)"
       else:
         s = ""
-      print(str(i+1) + ". " + item["description"] + s)
+      print(str(item["id"]) + ". " + item["description"] + s)
