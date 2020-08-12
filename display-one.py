@@ -7,13 +7,13 @@ import sys
 from examples import todolist_0
 
 if __name__ == "__main__":
-    if 2 > len(sys.argv):
+    if len(sys.argv) < 2:
         print("Veuillez donner un argument")
         exit(1)
 
     i = int(sys.argv[1]) - 1
 
-    if i < 0:
+    if i< 0:
         print("Veuillez rentrer un nombre supérieur à zéro")
         exit(1)
 
