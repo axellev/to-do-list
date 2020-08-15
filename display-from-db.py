@@ -7,20 +7,21 @@ def dict_factory(cursor, row):
         d[col[0]] = row[idx]
     return d
     
+def display_items(items):
+    for item in items:
+        print(str(item["id"]) + ". " + item["description"] + " " + item["status"])
 
-conn = sqlite3.connect('example.db')
-conn.row_factory = dict_factory
+# execute only if run as a script
+if __name__ == "__main__":
 
-# used to interact with the db
-cursor = conn.cursor()
+    # connection to to db
+    conn = sqlite3.connect('example.db')
+    conn.row_factory = dict_factory
 
+    # used to interact with the db
+    cursor = conn.cursor()
+    cursor.execute('select * from items')
+    items = cursor.fetchall()
 
-cursor.execute('select * from items')
-records = cursor.fetchall()
-
-for record in records:
-    print(str(record.get("id")) + ". " + record.get("description") + " " + record.get("status"))
-
-
-        
-
+    # calling function
+    display_items(items)
