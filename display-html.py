@@ -1,5 +1,5 @@
 from examples import todolist_0
-
+from display import status_to_string
 
 html_beginning = """<!DOCTYPE html>
 <html lang="en">
@@ -18,10 +18,7 @@ html_ending = """</body>
 
 def display_items(items):
     for item in items:
-        if item["is_done"]:
-            s = " (DONE)"
-        else:
-            s = ""
+        s = status_to_string(item["status"])
         print("<li>" + str(item["id"]) + ". " + item["description"] + s + "</li>")
 
 if __name__ == "__main__":
@@ -31,10 +28,3 @@ if __name__ == "__main__":
     display_items(todolist_0["items"])
     print("</ul>")
     print(html_ending)
-
-
-
-
-
-
-
