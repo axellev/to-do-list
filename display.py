@@ -2,10 +2,13 @@ from examples import todolist_0
 
 def display_items(items):
     for item in items:
-      if item["is_done"]:
+      if item["status"] == "done":
         s = " (DONE)"
-      else:
+      elif item["status"] == "todo":
         s = ""
+      else:
+        raise Exception("Unexpected status value: should be either done or todo")
+
       print(str(item["id"]) + ". " + item["description"] + s)
 
 if __name__ == "__main__":
