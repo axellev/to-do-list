@@ -1,4 +1,5 @@
 import sqlite3
+from display import display_items
 
 # From https://stackoverflow.com/questions/3300464/how-can-i-get-dict-from-sqlite-query
 def dict_factory(cursor, row):
@@ -6,10 +7,6 @@ def dict_factory(cursor, row):
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
-    
-def display_items(items):
-    for item in items:
-        print(str(item["id"]) + ". " + item["description"] + " " + item["status"])
 
 # execute only if run as a script
 if __name__ == "__main__":
