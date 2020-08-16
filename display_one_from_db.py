@@ -1,12 +1,7 @@
 import sqlite3
 import sys
 from display import display_items
-
-def dict_factory(cursor, row):
-    d = {}
-    for idx, col in enumerate(cursor.description):
-        d[col[0]] = row[idx]
-    return d
+from display_from_db import dict_factory
 
 # execute only if run as a script
 if __name__ == "__main__":
