@@ -40,5 +40,8 @@ if __name__ == "__main__":
         print("Il n'y a pas d'items pour cet ID de todolist")
         exit(1)
 
+    # We're sure there is at least one item since we checked above.
+    # All of them have the same title.
+    print(items[0]["title"])
     # calling function
     display_items(items)
