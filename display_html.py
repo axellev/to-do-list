@@ -1,8 +1,16 @@
+import jinja2
 import sqlite3
 import sys
 
 from db_helpers import dict_factory
-from html_helpers import display_items, html_beginning, html_ending
+
+# helper function similar to the one provided by Flask.
+templateLoader = jinja2.FileSystemLoader(searchpath="./templates")
+templateEnv = jinja2.Environment(loader=templateLoader)
+def render_template(filename, **args):
+    template = templateEnv.get_template(filename)
+    return template.render(**args)
+
 
 # execute only if run as a script
 if __name__ == "__main__":
@@ -35,12 +43,4 @@ if __name__ == "__main__":
         print("Il n'y a pas d'items pour cet ID de todolist")
         exit(1)
 
-    print(html_beginning)
-    # We're sure there is at least one item since we checked above.
-    # All of them have the same title.
-    print("<h2>" + items[0]["title"] + "</h2>")
-    print("<ul>")
-    # calling function
-    display_items(items)
-    print("</ul>")
-    print(html_ending)
+    print(render_template('todolist.html', title=items[0]["title"], items=items))
