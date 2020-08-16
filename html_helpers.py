@@ -18,4 +18,4 @@ html_ending = """</body>
 def display_items(items):
     for item in items:
         s = status_to_string(item["status"])
-        print("<li>" + str(item["id"]) + ". " + item["description"] + s + "</li>")
+        print('<li><a href="item-' + str(item["id"]) + '.html">' + str(item["id"]) + "</a>. " + item["description"] + s + "</li>")
