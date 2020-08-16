@@ -1,7 +1,7 @@
 import sqlite3
 import sys
 from display import display_items
-from display_from_db import dict_factory
+from db_helpers import dict_factory
 
 # execute only if run as a script
 if __name__ == "__main__":
