@@ -1,4 +1,4 @@
-from flask import Flask, g
+from flask import Flask, g, render_template
 import sqlite3
 
 from db_helpers import dict_factory
@@ -32,7 +32,11 @@ def close_connection(exception):
 @app.route('/')
 def hello_world():
     items = query("select * from items")
-    return 'We have ' + str(len(items)) + ' items!'
+    return render_template('todolist.html', title='Hello, World!', items=items)
+
+@app.route('/item/<int:item_id>')
+def display_item(item_id):
+    return 'Item %s!' % item_id
 
 
 if __name__ == "__main__":
