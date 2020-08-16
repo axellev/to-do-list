@@ -1,4 +1,4 @@
-from display import status_to_string
+from display_text import status_to_string
 
 html_beginning = """<!DOCTYPE html>
 <html lang="en">

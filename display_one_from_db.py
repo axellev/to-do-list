@@ -1,6 +1,6 @@
 import sqlite3
 import sys
-from display import display_items
+from display_text import display_items
 from db_helpers import dict_factory
 
 # execute only if run as a script

@@ -1,7 +1,19 @@
 import sqlite3
 import sys
-from display import display_items
 from db_helpers import dict_factory
+
+def status_to_string(status):
+    if status == "done":
+        return " (DONE)"
+    elif status == "todo":
+        return ""
+    else:
+        raise Exception("Unexpected status value: should be either done or todo")
+
+def display_items(items):
+    for item in items:
+      s = status_to_string(item["status"])
+      print(str(item["id"]) + ". " + item["description"] + s)
 
 # execute only if run as a script
 if __name__ == "__main__":
