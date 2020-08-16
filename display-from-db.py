@@ -36,5 +36,9 @@ if __name__ == "__main__":
     ''', args)
     items = cursor.fetchall()
 
+    if len(items) == 0:
+        print("Il n'y a pas d'items pour cet ID de todolist")
+        exit(1)
+
     # calling function
     display_items(items)
