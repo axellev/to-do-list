@@ -2,7 +2,8 @@ import sqlite3
 import sys
 
 from db_helpers import dict_factory
-from html_helpers import display_items, html_beginning, html_ending
+from html_helpers import html_beginning, html_ending
+from display_html import render_template
 
 # execute only if run as a script
 if __name__ == "__main__":
@@ -36,9 +37,4 @@ if __name__ == "__main__":
         exit(1)
 
     # We're sure there is exactly one item since we checked above.
-    print(html_beginning)
-    print("<ul>")
-    # calling function
-    display_items(items)
-    print("</ul>")
-    print(html_ending)
+    print(render_template('item.html', item=items[0]))
