@@ -1,51 +1,44 @@
-from examples import todolist_0
+import sqlite3
 import sys
 
+from db_helpers import dict_factory
+from html_helpers import display_items, html_beginning, html_ending
 
-
-
-begin = """<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>To-Do List</title>
-</head>
-<body>
-<h1>Voici un &#201;lement de ma liste</h1>"""
-
-end = """
-</body>
-</html>
-"""
-
+# execute only if run as a script
 if __name__ == "__main__":
-
     if len(sys.argv) < 2:
         print("Veuillez donner un argument")
         exit(1)
 
-    i = int(sys.argv[1]) - 1
+    i = int(sys.argv[1])
 
-    
-    if i< 0:
-        #print("Veuillez rentrer un nombre supérieur à zéro")
+    if i <= 0:
+        print("Veuillez rentrer un nombre supérieur à zéro")
         exit(1)
 
-    if i >= len(todolist_0["items"]):
-        #print("La liste ne contient pas cet index")
+    # connection to to db
+    conn = sqlite3.connect('example.db')
+    conn.row_factory = dict_factory
+
+    # used to interact with the db
+    cursor = conn.cursor()
+    args = (i,)
+    cursor.execute('''
+        SELECT * FROM items 
+        WHERE items.id=?;
+    ''', args)
+    items = cursor.fetchall()
+
+    if len(items) == 0:
+        print(html_beginning)
+        print("Il n'y a pas d'item pour cet ID")
+        print(html_ending)
         exit(1)
 
-    print(begin)
-    items = todolist_0["items"]
-    item = items[i] 
-
-    if item["is_done"]:
-        s = " (DONE)"
-    else:
-        s = ""
-    print(str(item["id"]) + " ." + item["description"] + s)
-    print(end)
-
-
+    # We're sure there is exactly one item since we checked above.
+    print(html_beginning)
+    print("<ul>")
+    # calling function
+    display_items(items)
+    print("</ul>")
+    print(html_ending)

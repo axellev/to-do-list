@@ -1,7 +1,6 @@
 import sqlite3
 import sys
 
-from display import display_items
 from db_helpers import dict_factory
 from html_helpers import display_items, html_beginning, html_ending
 
