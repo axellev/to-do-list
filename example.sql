@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS "items" (
 	"id"	INTEGER NOT NULL UNIQUE,
 	"description"	TEXT NOT NULL CHECK(length(description) >= 5),
 	"status"	TEXT NOT NULL DEFAULT todo,
-	"todolist" INTEGER,
+	"todolist" INTEGER NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("todolist") REFERENCES todolists("id")
 );
@@ -33,7 +33,9 @@ INSERT INTO items VALUES
   (14, 'clean code','todo', 2),
   (12, 'complete howto.md','todo', 2),
   (15, 'make a function that use todolist_0','todo', 2),
-  (11, 'commit to github','todo', 2);
+  (20, 'commit it','todo', 1),
+  (35, 'delete items','todo', 1),
+  (18, 'update items','todo', 1);
 
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES
