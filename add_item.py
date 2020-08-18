@@ -6,9 +6,10 @@ from db_helpers import dict_factory
 
 # execute only if run as a script
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Veuillez donner un argument")
+    if len(sys.argv) < 3:
+        print("Give two arguments")
         exit(1)
+
 
     i = str(sys.argv[1])
     x = int(sys.argv[2])
@@ -29,7 +30,7 @@ if __name__ == "__main__":
 
     added_row_count = cursor.rowcount
     if added_row_count == 0:
-        print("L'item n'a pas été ajouté")
+        print("The item wasn't added")
     else:
-        print("L'item: " + str(i)  + " a été ajouté")
+        print("The item: " + str(i)  + " was added")
  
