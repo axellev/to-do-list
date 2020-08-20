@@ -1,4 +1,4 @@
-from flask import Flask, g, render_template, request
+from flask import Flask, g, render_template, request, url_for, redirect
 import sqlite3
 
 from db_helpers import dict_factory
@@ -40,8 +40,12 @@ def display_todolist(todolist_id):
         WHERE items.todolist=todolists.id
           AND items.todolist=?;""", (todolist_id,))
     if len(items) == 0:
-        return "Il n'y a pas de to -do list correspondant à cet ID"
+        todolists = query("select * from todolists where id=?", (todolist_id,))
+        if len(todolists) == 0:
+            return render_template('error.html')
+        return render_template('todolist.html', title=todolists[0]["title"], todolist_id=todolist_id, items=[])   
     return render_template('todolist.html', title=items[0]["title"], todolist_id=todolist_id, items=items)
+    
     
 
 @app.route('/item/<int:item_id>')
@@ -51,7 +55,7 @@ def display_item(item_id):
         FROM items
         WHERE items.id=?;""", (item_id,))
     if len(items) == 0:
-        return "Il n'y a pas d'item pour cet ID"
+        return "No items in the list"
     return render_template('item.html', item=items[0])
 
 @app.route('/')
@@ -78,7 +82,33 @@ def add_new_item(todolist_id):
         INSERT INTO items (description, todolist)
         VALUES (?, ?)""", (description, todolist_id))
     commit()
-    return "Voila."
+    
+    return render_template('itemAdded.html')
+
+@app.route('/new')
+def new_todolist():
+    return render_template('newTodolist.html')
+
+@app.route('/add', methods=["POST"])
+def add_todolist():
+    
+    if 'title' not in request.form:
+        return 'Error: the field "title" is missing.'
+
+    title = request.form['title']
+
+    if len(title) < 1:
+        return 'Error: the field "title" is too short.'
+
+    query("""
+        INSERT INTO todolists (title)
+        VALUES (?)""", (title,))
+    commit()
+    return redirect(url_for('add_new_item'))
+
+
+
+
 
 if __name__ == "__main__":
     app.run()
