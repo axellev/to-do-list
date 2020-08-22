@@ -23,6 +23,13 @@ def query(query, args=()):
     cursor.close()
     return records
 
+# Useful for inserts. This returns the last row ID.
+def query_with_lastrowid(query, args=()):
+    cursor = get_conn().execute(query, args)
+    lastrowid = cursor.lastrowid
+    cursor.close()
+    return lastrowid
+
 def commit():
     get_conn().commit()
 
@@ -87,8 +94,7 @@ def add_new_item(todolist_id):
         INSERT INTO items (description, todolist)
         VALUES (?, ?)""", (description, todolist_id))
     commit()
-    
-    return render_template('itemAdded.html')
+    return redirect(url_for('display_todolist', todolist_id=todolist_id))
 
 @app.route('/new')
 def new_todolist():
@@ -105,14 +111,11 @@ def add_todolist():
     if len(title) < 1:
         return render_template('error.html', message='Error: the field "title" is too short.'), 400
 
-    query("""
+    lastrowid = query_with_lastrowid("""
         INSERT INTO todolists (title)
-        VALUES (?)""", (title,))
+        VALUES (?);""", (title,))
     commit()
-    return redirect(url_for('add_new_item'))
-
-
-
+    return redirect(url_for('display_todolist', todolist_id=lastrowid))
 
 
 if __name__ == "__main__":
