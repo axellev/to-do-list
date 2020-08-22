@@ -30,6 +30,13 @@ def query_with_lastrowid(query, args=()):
     cursor.close()
     return lastrowid
 
+# Useful for deletes. This returns how many rows are touched.
+def query_with_rowcount(query, args=()):
+    cursor = get_conn().execute(query, args)
+    rowcount = cursor.rowcount
+    cursor.close()
+    return rowcount
+
 def commit():
     get_conn().commit()
 
@@ -95,6 +102,34 @@ def add_new_item(todolist_id):
         VALUES (?, ?)""", (description, todolist_id))
     commit()
     return redirect(url_for('display_todolist', todolist_id=todolist_id))
+
+@app.route('/todolist/<int:todolist_id>/delete_form')
+def delete_item_form(todolist_id):
+    return render_template('deleteItem.html', todolist_id=todolist_id)
+
+@app.route('/todolist/<int:todolist_id>/delete', methods=["POST"])
+def delete_item(todolist_id):
+    if 'item_id' not in request.form:
+        return render_template('error.html', message='Error: the field "item_id" is missing.'), 400
+
+    item_id = request.form['item_id']
+
+    try:
+        item_id = int(item_id)
+    except ValueError:
+        return render_template('error.html', message='Error: the field "item_id" is not a integer.'), 400
+
+    args = (item_id,)
+    rowcount = query_with_rowcount('''
+        DELETE FROM items
+        WHERE items.id=?;
+    ''', args)
+    commit()
+
+    if rowcount:
+        return redirect(url_for('display_todolist', todolist_id=todolist_id))
+    else:
+        return render_template('error.html', message="Error: the item doesn't exist."), 400
 
 @app.route('/new')
 def new_todolist():
