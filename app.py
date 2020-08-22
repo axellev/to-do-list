@@ -83,7 +83,7 @@ def new_item(todolist_id):
 def add_new_item(todolist_id):
 
     if 'description' not in request.form:
-        return render_template('error.html', message='Error: the field "description" is too short.'), 400
+        return render_template('error.html', message='Error: the field "description" is missing.'), 400
 
     description = request.form['description']
 
