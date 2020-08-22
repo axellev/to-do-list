@@ -32,6 +32,13 @@ def close_connection(exception):
     if conn is not None:
         conn.close()
 
+# Custom 404 page, see
+# https://flask.palletsprojects.com/en/1.1.x/patterns/errorpages/
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('error.html', message='Not Found'), 404
+
 @app.route('/todolist/<int:todolist_id>')
 def display_todolist(todolist_id):
     items = query("""
@@ -42,11 +49,9 @@ def display_todolist(todolist_id):
     if len(items) == 0:
         todolists = query("select * from todolists where id=?", (todolist_id,))
         if len(todolists) == 0:
-            return render_template('error.html', message="This todolist doesn't exist.")
+            return render_template('error.html', message="This todolist doesn't exist."), 404
         return render_template('todolist.html', title=todolists[0]["title"], todolist_id=todolist_id, items=[])   
     return render_template('todolist.html', title=items[0]["title"], todolist_id=todolist_id, items=items)
-    
-    
 
 @app.route('/item/<int:item_id>')
 def display_item(item_id):
@@ -55,7 +60,7 @@ def display_item(item_id):
         FROM items
         WHERE items.id=?;""", (item_id,))
     if len(items) == 0:
-        return "No items in the list"
+        return render_template('error.html', message="This item doesn't exist."), 404
     return render_template('item.html', item=items[0])
 
 @app.route('/')
@@ -71,12 +76,12 @@ def new_item(todolist_id):
 def add_new_item(todolist_id):
 
     if 'description' not in request.form:
-        return 'Error: the field "description" is missing.'
+        return render_template('error.html', message='Error: the field "description" is too short.'), 400
 
     description = request.form['description']
 
     if len(description) < 5:
-        return 'Error: the field "description" is too short.'
+        return render_template('error.html', message='Error: the field "description" is too short.'), 400
 
     query("""
         INSERT INTO items (description, todolist)
@@ -93,12 +98,12 @@ def new_todolist():
 def add_todolist():
     
     if 'title' not in request.form:
-        return 'Error: the field "title" is missing.'
+        return render_template('error.html', message='Error: the field "title" is missing.'), 400
 
     title = request.form['title']
 
     if len(title) < 1:
-        return 'Error: the field "title" is too short.'
+        return render_template('error.html', message='Error: the field "title" is too short.'), 400
 
     query("""
         INSERT INTO todolists (title)
