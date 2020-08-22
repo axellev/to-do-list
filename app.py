@@ -42,7 +42,7 @@ def display_todolist(todolist_id):
     if len(items) == 0:
         todolists = query("select * from todolists where id=?", (todolist_id,))
         if len(todolists) == 0:
-            return render_template('error.html')
+            return render_template('error.html', message="This todolist doesn't exist.")
         return render_template('todolist.html', title=todolists[0]["title"], todolist_id=todolist_id, items=[])   
     return render_template('todolist.html', title=items[0]["title"], todolist_id=todolist_id, items=items)
     

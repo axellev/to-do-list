@@ -2,7 +2,6 @@ import sqlite3
 import sys
 
 from db_helpers import dict_factory
-from html_helpers import html_beginning, html_ending
 from display_html import render_template
 
 # execute only if run as a script
@@ -31,9 +30,7 @@ if __name__ == "__main__":
     items = cursor.fetchall()
 
     if len(items) == 0:
-        print(html_beginning)
-        print("Il n'y a pas d'item pour cet ID")
-        print(html_ending)
+        print(render_template('error.html', message="This item doesn't exist."))
         exit(1)
 
     # We're sure there is exactly one item since we checked above.
