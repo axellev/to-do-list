@@ -1,6 +1,7 @@
 body {
     
     font-family: monospace;
+    font-size: large;   
     margin-top: 1em;
     margin-bottom: 0.5em;
     padding-top: 0.5em;
@@ -18,3 +19,4 @@ li {
     list-style-type: square;
     font-size: large;   
 }
+
