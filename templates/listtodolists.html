@@ -8,12 +8,14 @@
 </head>
 <body>
 <a href="/">Home</a>
+<a href="/login">Login</a>
 <h1>To-do lists</h1>
 <ul>
 {% for todolist in todolists -%}
-<li><a href="/todolist/{{ todolist['id'] }}">{{ todolist['id'] }}</a>. {{ todolist['title'] }}</li>
+<li><a class="css-button-rounded" href="/todolist/{{ todolist['id'] }}">{{ todolist['id'] }}</a> {{ todolist['title'] }}</li>
 {% endfor -%}
 </ul>
-<a href="/new">New todolist</a>
+<a class="css-button-rounded-new" href="/new">New todolist</a>
+
 </body>
 </html>
