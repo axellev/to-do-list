@@ -6,17 +6,19 @@ body {
     margin-bottom: 0.5em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    padding-left: 1em;
+    padding-left: em;
     background-color: #eee;
+    display: center; 
 }
 
 h2 {
     margin-top: 0.5em;
+
 }
 
 li {
     margin-top: 0.5em;
-    list-style-type: square;
+    list-style-type: none;
     font-size: large;   
 }
 
@@ -24,3 +26,27 @@ label, input {
     margin-top: 10px;
     margin-bottom: 20px;
 }
+
+
+.css-button-rounded {
+    background: #DAA520;
+    color: rgb(63, 61, 61);
+    display: inline-block;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    width: 40px;
+    border-radius: 4px;  /* he rounded corners are here */
+}
+
+.css-button-rounded-new {
+    background-color: rgb(63, 61, 61);
+    color:  #DAA520;
+    display: inline-block;
+    padding: 20px 20px;
+    text-align: center;
+    text-decoration: none;
+    width: 63px;
+    border-radius: 4px; 
+}
+
