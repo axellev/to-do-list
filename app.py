@@ -1,6 +1,6 @@
 from flask import Flask, g, render_template, request, url_for, redirect
 import sqlite3
-
+from login import check_username_and_password
 from db_helpers import dict_factory
 
 app = Flask(__name__)
@@ -103,25 +103,50 @@ def add_new_item(todolist_id):
     commit()
     return redirect(url_for('display_todolist', todolist_id=todolist_id))
 
-@app.route('/todolist/<int:todolist_id>/delete_form')
-def delete_item_form(todolist_id):
-    return render_template('deleteItem.html', todolist_id=todolist_id)
+@app.route('/todolist/<int:todolist_id>/delete_form/<int:item_id>')
+def delete_item_form(todolist_id, item_id):
+    return render_template('deleteItem.html', todolist_id=todolist_id, item_id=item_id)
 
-@app.route('/todolist/<int:todolist_id>/delete', methods=["POST"])
-def delete_item(todolist_id):
-    if 'item_id' not in request.form:
-        return render_template('error.html', message='Error: the field "item_id" is missing.'), 400
+@app.route('/item/<int:item_id>/delete', methods=["POST"])
+def delete_item(item_id):
+    if 'todolist_id' not in request.form:
+        return render_template('error.html', message='Error: the field "todolist_id" is missing.'), 400
 
-    item_id = request.form['item_id']
+    todolist_id = request.form['todolist_id']
 
     try:
-        item_id = int(item_id)
+        todolist_id = int(todolist_id)
     except ValueError:
-        return render_template('error.html', message='Error: the field "item_id" is not a integer.'), 400
+        return render_template('error.html', message='Error: the field "todolist_id" is not a integer.'), 400
 
     args = (item_id,)
     rowcount = query_with_rowcount('''
         DELETE FROM items
+        WHERE items.id=?;
+    ''', args)
+    commit()
+
+    if rowcount:
+        return redirect(url_for('display_todolist', todolist_id=todolist_id))
+    else:
+        return render_template('error.html', message="Error: the item doesn't exist."), 400
+
+@app.route('/item/<int:item_id>/done', methods=["POST"])
+def done_item(item_id):
+    if 'todolist_id' not in request.form:
+        return render_template('error.html', message='Error: the field "todolist_id" is missing.'), 400
+
+    todolist_id = request.form['todolist_id']
+
+    try:
+        todolist_id = int(todolist_id)
+    except ValueError:
+        return render_template('error.html', message='Error: the field "todolist_id" is not a integer.'), 400
+
+    args = (item_id,)
+    rowcount = query_with_rowcount('''
+        UPDATE items
+        SET status='done'
         WHERE items.id=?;
     ''', args)
     commit()
@@ -152,6 +177,13 @@ def add_todolist():
     commit()
     return redirect(url_for('display_todolist', todolist_id=lastrowid))
 
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if request.method == 'POST':
+        return 'ok'
+    else:
+        return render_template('formUsers.html')
+
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host= '0.0.0.0')
