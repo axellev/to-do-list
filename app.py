@@ -238,8 +238,18 @@ def register():
         return render_template('formRegister.html')
 
 if __name__ == "__main__":
+    # Create the example database if it doesn't exist.
+    if not os.path.isfile(DATABASE):
+        sql = open('example.sql', 'r').read()
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.executescript(sql)
+        cursor.close()
+        conn.commit()
+
     if 'PORT' in os.environ:
         port = os.environ['PORT']
     else:
         port = 5000
+
     app.run(host='0.0.0.0', port=port)
