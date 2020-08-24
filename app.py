@@ -1,7 +1,9 @@
 from flask import Flask, g, render_template, request, url_for, redirect, session
+import os
 import sqlite3
-from db_helpers import dict_factory
 from werkzeug.security import check_password_hash, generate_password_hash
+
+from db_helpers import dict_factory
 
 app = Flask(__name__)
 
@@ -236,4 +238,8 @@ def register():
         return render_template('formRegister.html')
 
 if __name__ == "__main__":
-    app.run(host= '0.0.0.0')
+    if 'PORT' in os.environ:
+        port = os.environ['PORT']
+    else:
+        port = 5000
+    app.run(host='0.0.0.0', port=port)
