@@ -17,6 +17,14 @@ CREATE TABLE IF NOT EXISTS "items" (
 	FOREIGN KEY("todolist") REFERENCES todolists("id")
 );
 
+CREATE TABLE IF NOT EXISTS "users" (
+  "id"	INTEGER NOT NULL UNIQUE,
+  "username"	TEXT NOT NULL UNIQUE,
+  "email"	TEXT NOT NULL UNIQUE,
+  "hashed_password"	TEXT NOT NULL,
+  PRIMARY KEY("id" AUTOINCREMENT)
+);
+
 INSERT INTO items VALUES
   (21, 'try DB browser','todo', 1),
   (23, 'create connexion db in python','todo', 1),

@@ -1,10 +1,12 @@
-from flask import Flask, g, render_template, request, url_for, redirect
+from flask import Flask, g, render_template, request, url_for, redirect, session
 import sqlite3
-from login import check_username_and_password
 from db_helpers import dict_factory
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 
+# Set the secret key to some random bytes. Keep this really secret!
+app.secret_key = b'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 
 DATABASE = './example.db'
 
@@ -22,6 +24,12 @@ def query(query, args=()):
     records = cursor.fetchall()
     cursor.close()
     return records
+
+def query_one(query, args=()):
+    cursor = get_conn().execute(query, args)
+    record = cursor.fetchone()
+    cursor.close()
+    return record
 
 # Useful for inserts. This returns the last row ID.
 def query_with_lastrowid(query, args=()):
@@ -64,7 +72,7 @@ def display_todolist(todolist_id):
         todolists = query("select * from todolists where id=?", (todolist_id,))
         if len(todolists) == 0:
             return render_template('error.html', message="This todolist doesn't exist."), 404
-        return render_template('todolist.html', title=todolists[0]["title"], todolist_id=todolist_id, items=[])   
+        return render_template('todolist.html', title=todolists[0]["title"], todolist_id=todolist_id, items=[])
     return render_template('todolist.html', title=items[0]["title"], todolist_id=todolist_id, items=items)
 
 @app.route('/item/<int:item_id>')
@@ -162,7 +170,6 @@ def new_todolist():
 
 @app.route('/add', methods=["POST"])
 def add_todolist():
-    
     if 'title' not in request.form:
         return render_template('error.html', message='Error: the field "title" is missing.'), 400
 
@@ -180,10 +187,53 @@ def add_todolist():
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == 'POST':
-        return 'ok'
+        username = request.form['username']
+        password = request.form['password']
+        error = False
+        user = query_one("""
+            SELECT * FROM users WHERE username=?
+        """, (username,))
+
+        if user:
+            if check_password_hash(user['hashed_password'], password):
+                session['username'] = username
+                return redirect(url_for('login'))
+            else:
+                return render_template('error.html', message="Login or password mismatch.")
+        else:
+            # The user doesn't exist, but don't reveal this fact.
+            return render_template('error.html', message="Login or password mismatch.")
+
     else:
         return render_template('formUsers.html')
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('login'))
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        if not username:
+            return render_template('error.html', message="Username cannot be empty")
+        elif not password:
+            return render_template('error.html', message="Paswword cannot be empty")
+        elif not email:
+            return render_template('error.html', message="Email cannot be empty")
+
+        hashed_password = generate_password_hash(password)
+        query("""
+            INSERT INTO users (username, hashed_password, email)
+            VALUES (?,?,?)""", (username, hashed_password, email))
+        commit()
+        # TODO Check the return value of the INSERT (e.g. the username or the email already exist).
+        return redirect(url_for('display_todolists'))
+    else:
+        return render_template('formRegister.html')
 
 if __name__ == "__main__":
     app.run(host= '0.0.0.0')
