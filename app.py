@@ -1,4 +1,4 @@
-from flask import Flask, g, render_template, request, url_for, redirect, session
+from flask import Flask, abort, g, render_template, request, url_for, redirect, session, Response
 import os
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -62,6 +62,10 @@ def close_connection(exception):
 def page_not_found(e):
     # note that we set the 404 status explicitly
     return render_template('error.html', message='Not Found'), 404
+
+def abort_when_unlogged():
+    if 'username' not in session:
+        abort(Response(render_template('error.html', message="You need to be logged in to create a todolist."), 403))
 
 @app.route('/todolist/<int:todolist_id>')
 def display_todolist(todolist_id):
@@ -168,10 +172,21 @@ def done_item(item_id):
 
 @app.route('/new')
 def new_todolist():
+    print(session)
     return render_template('newTodolist.html')
+
+@app.route('/session')
+def display_session():
+    if 'username' in session:
+        print(session['username'] + ' is logged.')
+    else:
+        print('Nobody is logged.')
+    return Response(str(session), mimetype='text/plain')
 
 @app.route('/add', methods=["POST"])
 def add_todolist():
+    abort_when_unlogged()
+
     if 'title' not in request.form:
         return render_template('error.html', message='Error: the field "title" is missing.'), 400
 
@@ -191,7 +206,6 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        error = False
         user = query_one("""
             SELECT * FROM users WHERE username=?
         """, (username,))
