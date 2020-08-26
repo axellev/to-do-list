@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
     <title>Error</title>
 </head>
 <body>
+<div style="margin: auto; width: 50%;">
 <a class="css-button-rounded-new"href="/">Home</a>
 <h1>{{ message }}</h1>
+</div>
 </body>
 </html>
