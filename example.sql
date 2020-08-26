@@ -12,12 +12,12 @@ CREATE TABLE IF NOT EXISTS "items" (
 	"id"	INTEGER NOT NULL UNIQUE,
 	"description"	TEXT NOT NULL CHECK(length(description) >= 3),
 	"status"	TEXT NOT NULL DEFAULT todo,
-	"todolist" INTEGER NOT NULL,
+	"todolist"	INTEGER NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT),
-  CONSTRAINT fk_todolists
-	FOREIGN KEY("todolist_id") 
-  REFERENCES todolists("id")
-  ON DELETE CASCADE
+	CONSTRAINT fk_todolists
+	FOREIGN KEY("todolist")
+	REFERENCES todolists("id")
+	ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "users" (
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS "users" (
   "username"	TEXT NOT NULL UNIQUE,
   "email"	TEXT NOT NULL UNIQUE,
   "hashed_password"	TEXT NOT NULL,
-  PRIMARY KEY("id" AUTOINCREMENT),
+  PRIMARY KEY("id" AUTOINCREMENT)
 );
 
 INSERT INTO items VALUES
