@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
     <title>To-Do List</title>
 </head>
 <body>
-<a href="/">Home</a>
+<div style="margin: auto; width: 50%;">
+<a class = "menu" href="/">Home</a>
 {% if session['username'] %}
 {{ session['username'] }} <a href="/logout">Logout</a>
 {% else %}
@@ -21,6 +23,6 @@
 {% endfor -%}
 </ul>
 <a class="css-button-rounded-new" href="/new">New todolist</a>
-
+</div>
 </body>
 </html>
