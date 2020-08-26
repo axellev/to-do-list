@@ -2,6 +2,7 @@ from flask import Flask, abort, g, render_template, request, url_for, redirect, 
 import os
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
+from jinja2 import Template
 
 from db_helpers import dict_factory
 
@@ -67,6 +68,10 @@ def abort_when_unlogged():
     if 'username' not in session:
         abort(Response(render_template('error.html', message="You need to be logged in to create a todolist."), 403))
 
+def abort_when_unlogged_item():
+    if 'username' not in session:
+        abort(Response(render_template('error.html', message="You need to be logged in to create an item."), 403))
+
 @app.route('/todolist/<int:todolist_id>')
 def display_todolist(todolist_id):
     items = query("""
@@ -102,6 +107,7 @@ def new_item(todolist_id):
 
 @app.route('/todolist/<int:todolist_id>/add', methods=["POST"])
 def add_new_item(todolist_id):
+    abort_when_unlogged_item()
 
     if 'description' not in request.form:
         return render_template('error.html', message='Error: the field "description" is missing.'), 400
@@ -223,6 +229,8 @@ def login():
     else:
         return render_template('formUsers.html')
 
+
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
@@ -233,13 +241,19 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        passwordcheck = request.form ['passwordcheck']
         email = request.form['email']
         if not username:
             return render_template('error.html', message="Username cannot be empty")
-        elif not password:
-            return render_template('error.html', message="Paswword cannot be empty")
         elif not email:
             return render_template('error.html', message="Email cannot be empty")
+        elif not password:
+            return render_template('error.html', message="Password cannot be empty")
+        elif not passwordcheck:
+            return render_template('error.html', message="Password Check cannot be empty")
+        elif password != passwordcheck:
+            return render_template('error.html', message= "Your password doesn't match")
+
 
         hashed_password = generate_password_hash(password)
         query("""
