@@ -181,6 +181,35 @@ def new_todolist():
     print(session)
     return render_template('newTodolist.html')
 
+@app.route('/todolist/<int:todolist_id>/delete_form')
+def delete_todolist_form(todolist_id):
+    return render_template('deleteTodolist.html', todolist_id=todolist_id)
+
+@app.route('/todolist/<int:todolist_id>/delete', methods= ["POST"])
+def delete_todolist(todolist_id):
+    if 'todolist_id' not in request.form:
+        return render_template('error.html', message='Error: the field "todolist_id" is missing.'), 400
+
+    todolist_id = request.form['todolist_id']
+
+    try:
+        todolist_id = int(todolist_id)
+    except ValueError:
+        return render_template('error.html', message='Error: the field "todolist_id" is not a integer.'), 400
+
+    args = (todolist_id,)
+    rowcount = query_with_rowcount('''
+        DELETE FROM todolists
+        WHERE id=?;
+    ''', args)
+    commit()
+
+    if rowcount:
+        return redirect(url_for('display_todolists'))
+    else:
+        return render_template('error.html', message="Error: the to-do list doesn't exist."), 400
+
+
 @app.route('/session')
 def display_session():
     if 'username' in session:
