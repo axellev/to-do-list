@@ -8,7 +8,7 @@
 {% endif %}
 <ol>
 {% for item in items -%}
-<li><a class="css-button-rounded" href="/item/{{ item['id'] }}">{{ item['id'] }}</a> {{ item['description'] }} ({{ item['status']|upper }}) -
+<li><a class="css-button-rounded" href="/item/{{ item['id'] }}">{{ loop.index }}</a> {{ item['description'] }} ({{ item['status']|upper }}) -
     <form action="/item/{{ item['id'] }}/done" method="POST" style="display:inline;">
         <input type="hidden" name="todolist_id" id="todolist_id" value="{{ todolist_id }}">
         <button type="submit">Done</button>
