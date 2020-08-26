@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS "todolists" (
 );
 
 INSERT INTO todolists VALUES
-  (1, 'First to-do list'),
+  (1, 'Python mini programs'),
   (2, 'Training final project');
 
 CREATE TABLE IF NOT EXISTS "items" (
