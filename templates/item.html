@@ -1,8 +1,7 @@
 {% extends "base.html"%}
 
 {% block content %}
-<div style="margin: auto; width: 50%;"></div>
-<a class="css-button-rounded-new" href="/">Home</a>
+<div style="margin: auto; width: 50%;">
 <h1>Item of your list</h1>
 <ul>
 <li><a href="/item/{{ item['id'] }}">{{ item['id'] }}</a>. {{ item['description'] }}</li>
