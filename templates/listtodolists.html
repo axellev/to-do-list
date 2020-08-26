@@ -1,21 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
-    <title>To-Do List</title>
-</head>
-<body>
+{% extends "base.html"%}
+
+{% block content %}
 <div style="margin: auto; width: 50%;">
-<a class = "menu" href="/">Home</a>
-{% if session['username'] %}
-{{ session['username'] }} <a href="/logout">Logout</a>
-{% else %}
-<a href="/login">Login</a>
-<a href="/register">Register</a>
-{% endif %}
 <h1>To-do lists</h1>
 <ul>
 {% for todolist in todolists -%}
@@ -24,5 +10,4 @@
 </ul>
 <a class="css-button-rounded-new" href="/new">New todolist</a>
 </div>
-</body>
-</html>
+{% endblock %}

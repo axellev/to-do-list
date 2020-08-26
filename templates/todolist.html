@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <title>To-Do List</title>
-</head>
-<body>
-<a href="/">Home</a>
+{% extends "base.html"%}
+
+{% block content %}
+<div style="margin: auto; width: 50%;">
 <h2>{{ todolist_id }} {{ title }}</h2>
 {% if not items %}
 <p>This todolist is empty.</p>
 {% endif %}
-<ul>
+<ol>
 {% for item in items -%}
 <li><a class="css-button-rounded" href="/item/{{ item['id'] }}">{{ item['id'] }}</a> {{ item['description'] }} ({{ item['status']|upper }}) -
     <form action="/item/{{ item['id'] }}/done" method="POST" style="display:inline;">
@@ -22,8 +16,8 @@
     <a href="/todolist/{{ todolist_id }}/delete_form/{{ item['id'] }}">Delete</a>
 </li>
 {% endfor -%}
-</ul>
+</ol>
 <a class="css-button-rounded-new" href="/todolist/{{ todolist_id }}/new">New item</a>
-</body>
-</html>
+</div>
+{% endblock %}
 

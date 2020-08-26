@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+<div style="margin: auto; width: 50%;">
 <a href="/">Home</a>
 <h2>Deleting item {{ item_id }}...</h2>
 <form action="/item/{{ item_id }}/delete" method="POST">
@@ -14,4 +15,5 @@
   <button type="submit">Confirm</button> 
 </form>
 </body>
+</div>
 </html>
