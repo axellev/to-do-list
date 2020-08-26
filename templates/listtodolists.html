@@ -5,7 +5,7 @@
 <h1>To-do lists</h1>
 <ul>
 {% for todolist in todolists -%}
-<li><a class="css-button-rounded" href="/todolist/{{ todolist['id'] }}">{{ todolist['id'] }}</a> {{ todolist['title'] }}</li>
+<li><a class="css-button-rounded" href="/todolist/{{ todolist['id'] }}">{{ loop.index }}</a> {{ todolist['title'] }}</li>
 {% endfor -%}
 </ul>
 <a class="css-button-rounded-new" href="/new">New todolist</a>
