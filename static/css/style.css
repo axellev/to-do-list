@@ -27,6 +27,9 @@ label, input {
     margin-bottom: 20px;
 }
 
+a {
+    color: blue;
+}
 
 .css-button-rounded {
     background: #ffffff;
@@ -51,7 +54,7 @@ label, input {
     border-radius: 25px; 
 }
 
-.menu {
+a.menu {
     background-color: rgb(63, 61, 61);
     color:  #DAA520;
     display: inline-block;
@@ -63,3 +66,6 @@ label, input {
     border-radius: 10px; 
 }
 
+span.menu {
+    color: black;
+}
