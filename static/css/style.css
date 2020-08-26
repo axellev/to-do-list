@@ -29,24 +29,37 @@ label, input {
 
 
 .css-button-rounded {
-    background: #DAA520;
+    background: #ffffff;
     color: rgb(63, 61, 61);
     display: inline-block;
     padding: 10px 10px;
     text-align: center;
     text-decoration: none;
-    width: 40px;
-    border-radius: 4px;  /* he rounded corners are here */
+    width: 20px;
+    border-radius: 50px;  /* he rounded corners are here */
 }
 
 .css-button-rounded-new {
+    background-color: #DAA520;
+    color:  rgb(63, 61, 61);
+    display: inline-block;
+    padding: 15px 15px;
+    text-align: right;
+    text-decoration: none;
+    width: -moz-max-content;    /* Firefox/Gecko */
+    width: webkit-max-content;
+    border-radius: 25px; 
+}
+
+.menu {
     background-color: rgb(63, 61, 61);
     color:  #DAA520;
     display: inline-block;
-    padding: 20px 20px;
+    padding: 10px 10px;
     text-align: center;
     text-decoration: none;
-    width: 63px;
-    border-radius: 4px; 
+    width: -moz-max-content;    /* Firefox/Gecko */
+    width: webkit-max-content; /* Chrome */
+    border-radius: 10px; 
 }
 
