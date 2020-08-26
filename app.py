@@ -263,7 +263,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('display_todolists'))
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
