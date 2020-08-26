@@ -2,10 +2,6 @@
 
 {% block content %}
 <div style="margin: auto; width: 50%;">
-{% if session['username'] %}
-{{ session['username'] }} 
-{% else %}
-{% endif %}
 <h2>Login</h2>
 <form action="/login" method="POST">
     <label for="username"><b>Username</b></label><br>
