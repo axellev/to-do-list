@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div style="margin: auto; width: 50%;">
+<a href="/">Home</a>
+<h2>Deleting to-do list {{ todolist_id }}...</h2>
+<form action="/todolist/{{ todolist_id }}/delete" method="POST">
+  <p>Are you sure ?</p>
+  <input type="hidden" name="todolist_id" id="todolist_id" value="{{ todolist_id }}">
+  <button type="submit">Confirm</button> 
+</form>
+</body>
+</div>
+</html>
