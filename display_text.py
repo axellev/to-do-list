@@ -1,3 +1,13 @@
+# This program display the content of a given todolist. The todolist is chosen
+# by giving a todolist ID. Example usage:
+#
+#   py display_text.py 1
+#
+# The database can be created manually with:
+#
+#   sqlite3 example.db < example.sql
+
+
 import sqlite3
 import sys
 from db_helpers import dict_factory
